@@ -1,0 +1,50 @@
+<div class="menu">
+    <div class="space">
+      <label for="textValue">{{ image() ? 'image' : 'text' }}</label>
+      @if(image()) {
+      <select [(ngModel)]="imageValue">
+        <option value="pythios" selected="selected">pythios</option>
+        <option value="sisyphos">sisyphos</option>
+        <option value="trein">trein</option></select
+      >} @else {<input id="textValue" [(ngModel)]="textValue" />}
+    </div>
+    <div class="gap">
+      <label for="offsetX">x-offset</label>
+      <input
+        id="offsetX"
+        [ngModel]="offsetXSignal()"
+        (ngModelChange)="offsetX.set($event)"
+        [disabled]="centerX()"
+        type="number"
+        class="offset"
+      />
+      <input
+        id="centerX"
+        [ngModel]="centerX()"
+        (ngModelChange)="centerX.set($event)"
+        type="checkbox"
+      />
+      <label for="centerX">center</label>
+    </div>
+    <div class="gap">
+      <label for="offsetY">y-offset</label>
+      <input
+        id="offsetY"
+        [ngModel]="offsetYSignal()"
+        (ngModelChange)="offsetY.set($event)"
+        [disabled]="centerY()"
+        type="number"
+        class="offset"
+      />
+      <input
+        id="centerY"
+        [ngModel]="centerY()"
+        (ngModelChange)="centerY.set($event)"
+        type="checkbox"
+      />
+      <label for="centerY">center</label>
+    </div>
+    <button (click)="add.emit(content())">add</button>
+    <button (click)="cancel.emit()">cancel</button>
+  </div>
+  

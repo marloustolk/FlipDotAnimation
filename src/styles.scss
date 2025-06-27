@@ -1,0 +1,79 @@
+@font-face {
+    font-family: superPixel;
+    src: url(../public/SuperPixel.ttf);
+  }
+  
+  @font-face {
+    font-family: arcade;
+    src: url(../public/ArcadeClassic.TTF);
+  }
+  
+  body {
+    background-color: #1a1918;
+    font-family: superPixel;
+  }
+  
+  .title {
+    font-size: 3rem;
+    color: yellow;
+    text-align: center;
+  }
+  
+  .buttons {
+    justify-content: center;
+    display: flex;
+    gap: 1rem;
+    padding: 2rem 0;
+  }
+  
+  button {
+    background-color: #3d3b34;
+    font-size: 2rem;
+    color: yellow;
+    font-family: arcade;
+  }
+  
+  .menu {
+    margin: auto;
+    display: grid;
+    gap: 1rem;
+    width: 20rem;
+  }
+  
+  .space {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  label {
+    color: darkgoldenrod;
+    font-family: arcade;
+    font-size: large;
+  }
+  
+  .gap {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  input,
+  select {
+    background-color: black;
+    color: white;
+    width: 10rem;
+  
+    &[disabled] {
+      background-color: #3d3b34;
+      color: gray;
+    }
+  }
+  
+  input[type="checkbox"] {
+    background-color: black;
+    width: unset;
+  }
+  
+  input[type="number"] {
+    width: 40px;
+  }
+  

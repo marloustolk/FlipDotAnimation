@@ -1,0 +1,44 @@
+<div class="title">{{title}}</div>
+<app-display #display [rows]="rowCount" [columns]="columnCount"></app-display>
+<div class="buttons">
+  <button (click)="add = 'text'; display.animations = false">text</button>
+  <button (click)="add = 'image'; display.animations = false">image</button>
+  <button (click)="display.clear(); display.animations = false">clear</button>
+  <button (click)="display.animation()">animation</button>
+  <button (click)="display.print()">print</button>
+</div>
+@if (add) {
+<app-form
+  (add)="display.add($event); add = undefined"
+  (cancel)="add = undefined"
+  [image]="add === 'image'"
+  [rows]="rowCount"
+  [columns]="columnCount"
+></app-form>
+} @else {
+<div class="menu">
+  <div class="space">
+    <label for="execute">execute</label>
+    <select
+      id="execute"
+      [ngModel]="execute()"
+      (ngModelChange)="execute.set($event)"
+    >
+      <option value="now">now</option>
+      <option value="10">in 1 minute</option>
+      <option value="10">in 10 minutes</option>
+      <option value="30">in 30 minutes</option>
+    </select>
+  </div>
+  <button
+    (click)="flipDotService.sendPixels(display.flipdots, delay(), executeAt())"
+  >
+    send
+  </button>
+  <button
+    (click)="flipDotService.sendAnimation(columnCount, delay(), executeAt())"
+  >
+    send animation
+  </button>
+</div>
+}

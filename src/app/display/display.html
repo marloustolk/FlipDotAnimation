@@ -1,0 +1,17 @@
+<div class="input-board">
+    @for (row of flipdots; track rowIndex; let rowIndex = $index) {
+    <div class="row">
+      @for (pixel of row;track columnIndex; let columnIndex = $index) {
+      <div
+        class="pixel"
+        [ngClass]="pixel === 1 ? 'toggle' : ''"
+        (click)="toggle(rowIndex, columnIndex)"
+        (mouseover)="multiToggle($event, rowIndex, columnIndex)"
+      ></div>
+      @if (testdots()) {
+      <div class="pixel hover"></div>
+      } }
+    </div>
+    }
+  </div>
+  
