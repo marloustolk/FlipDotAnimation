@@ -12,7 +12,7 @@ import { createAnimation } from '../animation';
 export class Display implements OnInit {
   rows = input<number>(0);
   columns = input<number>(0);
-  testdots = input<Content>();
+  previewDots: number[][] = [];
 
   flipdots: number[][] = [];
   animations = false;
@@ -25,16 +25,29 @@ export class Display implements OnInit {
     this.flipdots = new Array(this.rows())
       .fill(0)
       .map(() => new Array(this.columns()).fill(0));
+    this.clearPreview();
   }
 
-  add(content: Content) {
+  clearPreview() {
+    this.previewDots = new Array(this.rows())
+      .fill(0)
+      .map(() => new Array(this.columns()).fill(0));
+  }
+
+  add(content: Content, preview = false) {
+    if (preview) {
+      this.clearPreview();
+    }
     const { pixels, offsetX, offsetY } = content;
     for (let row = offsetY; row < offsetY + pixels.rowCount; row++) {
       for (let col = offsetX; col < offsetX + pixels.columnCount; col++) {
         if (this.flipdots[row] && this.flipdots[row][col] != undefined) {
-          this.flipdots[row][col] = Number(
-            pixels.array[row - offsetY][col - offsetX]
-          );
+          const pixel = Number(pixels.array[row - offsetY][col - offsetX]);
+          if (preview) {
+            this.previewDots[row][col] = pixel;
+          } else {
+            this.flipdots[row][col] = pixel;
+          }
         }
       }
     }

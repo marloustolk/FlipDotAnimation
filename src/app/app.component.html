@@ -9,8 +9,9 @@
 </div>
 @if (add) {
 <app-form
-  (add)="display.add($event); add = undefined"
-  (cancel)="add = undefined"
+  (preview)="display.add($event, true);"
+  (add)="display.add($event); add = undefined; display.clearPreview()"
+  (cancel)="add = undefined; display.clearPreview()"
   [image]="add === 'image'"
   [rows]="rowCount"
   [columns]="columnCount"

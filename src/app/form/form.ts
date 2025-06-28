@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  effect,
   input,
   model,
   output,
@@ -17,6 +18,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './form.html',
 })
 export class Form {
+  preview = output<Content>();
   add = output<Content>();
   cancel = output<void>();
 
@@ -32,6 +34,10 @@ export class Form {
 
   protected offsetY = model<number>(0);
   protected centerY = model<boolean>(true);
+
+  constructor() {
+    effect(() => this.preview.emit(this.content()));
+  }
 
   content = computed(() => {
     return {

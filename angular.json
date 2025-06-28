@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "a": {
+    "flipdot": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/a",
+            "outputPath": "dist/flipdot",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "a:build:production"
+              "buildTarget": "flipdot:build:production"
             },
             "development": {
-              "buildTarget": "a:build:development"
+              "buildTarget": "flipdot:build:development"
             }
           },
           "defaultConfiguration": "development"
