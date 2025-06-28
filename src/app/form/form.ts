@@ -56,7 +56,7 @@ export class Form {
   offsetYSignal: Signal<number> = computed(() => {
     return this.centerY()
       ? Math.ceil((19 - this.pixels().rowCount) / 2)
-      : this.offsetX();
+      : this.offsetY();
   });
 
   private pixels = computed(() =>
