@@ -57,7 +57,7 @@ export class Display implements OnInit {
     if (event.buttons === 1) {
       this.flipdots[rowIndex][columnIndex] = 1;
     } else if (event.buttons === 2) {
-      this.flipdots[rowIndex][columnIndex] = 2;
+      this.flipdots[rowIndex][columnIndex] = 0;
     }
   }
 
@@ -84,7 +84,7 @@ export class Display implements OnInit {
 
   print() {
     const bytes = this.flipdots
-      .map((row) => row.map((b) => (b ? '1' : '0')).join())
+      .map((row) => row.join(''))
       .join('\n');
     console.log(bytes);
   }

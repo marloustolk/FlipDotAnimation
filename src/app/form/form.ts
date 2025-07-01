@@ -8,7 +8,7 @@ import {
   Signal,
 } from '@angular/core';
 import { images } from '../images';
-import { superPixel } from '../superPixel';
+import { minMaxPixel, superPixel } from '../fonts';
 import { Content, Pixels } from '../models';
 import { FormsModule } from '@angular/forms';
 
@@ -28,6 +28,8 @@ export class Form {
 
   protected textValue = model<string>('');
   protected imageValue = model<string>('pythios');
+
+  protected size = model<'small' | 'large'>('large');
 
   protected offsetX = model<number>(0);
   protected centerX = model<boolean>(true);
@@ -65,32 +67,74 @@ export class Form {
 
   private filterLetters() {
     return Array.from(this.textValue().toLowerCase()).filter((letter) =>
-      Object.keys(superPixel).includes(letter)
+      Object.keys(this.font()).includes(letter)
     );
   }
 
   private letterPixels() {
-    const content: string[] = new Array(9).fill('');
-    let currentRow = 0;
-    for (let l of this.filterLetters()) {
-      const letter = new Pixels(superPixel[l]);
-      if (this.endOfLine(currentRow, content, letter)) {
-        currentRow = 10;
-        content.concat(new Array(10).fill(''));
+    const font = this.font();
+    const fontHeight = new Pixels(font['a']).rowCount;
+
+    let content: string[] = new Array(fontHeight).fill('');
+
+    for (let letter of this.filterLetters()) {
+      const letterPixels = new Pixels(font[letter]);
+      for (let row = 0; row < fontHeight; row++) {
+        content[row] += content[row] ? '0' : '';
+        content[row] += letterPixels.array[row % (fontHeight + 1)].join('');
       }
-      for (let row = currentRow; row < currentRow + letter.rowCount; row++) {
-        content[row] += content[row] ? ',0,' : '';
-        content[row] += letter.array[row % 10].join();
-      }
+    }
+
+    while (this.lineToLong(content)) {
+      content = this.split(content, fontHeight);
+    }
+    if (this.centerX()) {
+      const maxWidth = content.reduce((a, b) => a.length < b.length ? b : a).length;
+      content = content.map(row => {
+        const whitespace = '0'.repeat(Math.floor((maxWidth - row.length) / 2));
+        return whitespace + row + whitespace;
+      })
+    } else {
+      content[0] += '0'.repeat(this.columns() - content[0].length);
     }
     return new Pixels(content.join('\n'));
   }
 
-  private endOfLine(currentRow: number, content: string[], letter: Pixels) {
-    if (currentRow > 0) {
-      return false;
+  private lineToLong(content: string[]) {
+    return this.lastLine(content).length > this.columns();
+  }
+
+  private split(content: string[], fontHeight: number) {
+    const currentRow = content.length;
+    const nextRow = fontHeight + 1;
+    const index = this.indexLastSpace(content);
+
+    content = content.concat(new Array(nextRow).fill(''));
+    for (let row = currentRow - fontHeight; row < currentRow; row++) {
+      content[row + nextRow] += content[row].slice(index);
+      content[row] = content[row].slice(0, index);
     }
-    const pixels = new Pixels(content.join('\n'));
-    return pixels.columnCount + letter.columnCount > this.columns();
+    return content;
+  }
+
+  private indexLastSpace(content: string[]) {
+    const space = new Pixels(this.font()[' '].split('\n').map(row => row + '0').join('\n'));
+    const rowsToCheck = content.slice(content.length - space.rowCount);
+    for (let column = this.columns() - space.columnCount; column > 0; column--) {
+      const stringRow = space.array[0].join('');
+      const isSpace = rowsToCheck.every(row => row.slice(column, column + space.columnCount) === stringRow)
+      if (isSpace) {
+        return column + space.columnCount;
+      }
+    }
+    return this.columns();
+  }
+
+  private lastLine(content: string[]) {
+    return content[content.length - 1];
+  }
+
+  private font() {
+    return this.size() === 'large' ? superPixel : minMaxPixel;
   }
 }

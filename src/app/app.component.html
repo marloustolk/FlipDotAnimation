@@ -1,17 +1,25 @@
-<div class="title">{{title}}</div>
+<div class="title">{{ title }}</div>
 <app-display #display [rows]="rowCount" [columns]="columnCount"></app-display>
 <div class="buttons">
   <button (click)="add = 'text'; display.animations = false">text</button>
   <button (click)="add = 'image'; display.animations = false">image</button>
-  <button (click)="display.clear(); display.animations = false">clear</button>
+  <button
+    (click)="
+      display.clear(); display.animations = false; add = undefined; resetTime()
+    "
+  >
+    clear
+  </button>
   <button (click)="display.animation()">animation</button>
   <button (click)="display.print()">print</button>
 </div>
 @if (add) {
 <app-form
-  (preview)="display.add($event, true);"
-  (add)="display.add($event); add = undefined; display.clearPreview()"
-  (cancel)="add = undefined; display.clearPreview()"
+  (preview)="display.add($event, true)"
+  (add)="
+    display.add($event); add = undefined; display.clearPreview(); resetTime()
+  "
+  (cancel)="add = undefined; display.clearPreview(); resetTime()"
   [image]="add === 'image'"
   [rows]="rowCount"
   [columns]="columnCount"
@@ -19,17 +27,13 @@
 } @else {
 <div class="menu">
   <div class="space">
-    <label for="execute">execute</label>
-    <select
+    <label for="execute">execute at </label>
+    <input
+      type="datetime-local"
       id="execute"
       [ngModel]="execute()"
       (ngModelChange)="execute.set($event)"
-    >
-      <option value="now">now</option>
-      <option value="10">in 1 minute</option>
-      <option value="10">in 10 minutes</option>
-      <option value="30">in 30 minutes</option>
-    </select>
+    />
   </div>
   <button
     (click)="flipDotService.sendPixels(display.flipdots, delay(), executeAt())"

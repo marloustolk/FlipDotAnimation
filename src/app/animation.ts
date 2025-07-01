@@ -21,7 +21,7 @@ function position(byteString: string, columns: number, pixels: number) {
 function move(row: number[], columns: number, move: number) {
   const offset = columns - row.length - move;
   if (offset > 0) {
-    return addZeros(offset).concat(',').concat(row.join());
+    return addZeros(offset).concat(row.join());
   }
   return row.splice(-offset).join();
 }
