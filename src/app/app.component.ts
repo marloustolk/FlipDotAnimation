@@ -3,10 +3,11 @@ import { Display } from './display/display';
 import { Form } from './form/form';
 import { FlipdotService } from './flipdot.service';
 import { FormsModule } from '@angular/forms';
+import { LoginComponent } from "./login/login.component";
 
 @Component({
   selector: 'app-root',
-  imports: [Display, Form, FormsModule],
+  imports: [Display, Form, FormsModule, LoginComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent {

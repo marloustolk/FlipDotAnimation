@@ -1,0 +1,20 @@
+.login {
+  position: absolute;
+  right: 10px;
+}
+
+.password {
+  display: grid;
+}
+
+small {
+  color: yellow;
+  font-family: arcade;
+  font-size: large;
+  margin-left: 10px;
+
+  &.error {
+    color: red;
+    margin-left: 0;
+  }
+}

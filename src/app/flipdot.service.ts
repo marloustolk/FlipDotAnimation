@@ -34,4 +34,9 @@ export class FlipdotService {
     };
     this.http.post<FlipDotInfo>(this.url, body).subscribe();
   }
+
+  get(password: string) {
+    const headers: Record<string, string> = { 'auth-key': password };
+    return this.http.get(this.url, { headers: headers });
+  }
 }

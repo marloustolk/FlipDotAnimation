@@ -1,0 +1,26 @@
+<div class="login">
+  @if (password) {
+  <p style="color: yellow">authenticated</p>
+  } @else if (login) {
+  <div id="password" class="password">
+    <input
+      #input
+      [type]="show ? 'text' : 'password'"
+      [(ngModel)]="passwordText"
+    />
+    <div>
+      <input
+        id="show"
+        type="checkbox"
+        [(ngModel)]="show"
+        (click)="input.focus()"
+      />
+      <small for="show">show</small>
+    </div>
+    @if (showError) {<small class="error">{{ errorPassword }}</small>
+    }
+  </div>
+  } @else {
+  <button (click)="login = true">login</button>
+  }
+</div>
