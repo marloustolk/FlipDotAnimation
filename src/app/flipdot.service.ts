@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class FlipdotService {
   private readonly url = 'https://api.mobitec.gyzie.com/message';
   private http = inject(HttpClient);
+  private password: string | undefined;
 
   sendPixels(pixels: number[][], delayMs: number, executeAt: string) {
     this.send([{ delayMs, pixels }], executeAt);
@@ -27,16 +28,21 @@ export class FlipdotService {
   }
 
   private send(frames: Frame[], executeAt: string) {
+    const headers: Record<string, string> = { 'auth-key': this.password! };
     console.log('execute at', executeAt, frames);
     const body: FlipDotInfo = {
       executeAt,
       frames,
     };
-    this.http.post<FlipDotInfo>(this.url, body).subscribe();
+    this.http.post<FlipDotInfo>(this.url, body, { headers: headers }).subscribe();
   }
 
   get(password: string) {
     const headers: Record<string, string> = { 'auth-key': password };
     return this.http.get(this.url, { headers: headers });
+  }
+
+  setPassword(password: string) {
+    this.password = password;
   }
 }

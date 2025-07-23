@@ -1,4 +1,4 @@
-<app-login></app-login>
+<app-login (loggedIn)="setPassword($event)"></app-login>
 <div class="title">{{ title }}</div>
 <app-display #display [rows]="rowCount" [columns]="columnCount"></app-display>
 <div class="buttons">
@@ -36,13 +36,24 @@
       (ngModelChange)="execute.set($event)"
     />
   </div>
+  @if (showError) {
+  <small style="color: red">{{ error }}</small>
+  }
   <button
-    (click)="flipDotService.sendPixels(display.flipdots, delay(), executeAt())"
+    (click)="
+      password
+        ? flipDotService.sendPixels(display.flipdots, delay(), executeAt())
+        : (showError = true)
+    "
   >
     send
   </button>
   <button
-    (click)="flipDotService.sendAnimation(columnCount, delay(), executeAt())"
+    (click)="
+      password
+        ? flipDotService.sendAnimation(columnCount, delay(), executeAt())
+        : (showError = true)
+    "
   >
     send animation
   </button>

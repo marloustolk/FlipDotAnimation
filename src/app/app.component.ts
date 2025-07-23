@@ -15,6 +15,9 @@ export class AppComponent {
   protected rowCount = 19;
   protected columnCount = 112;
   protected add: 'text' | 'image' | undefined;
+  showError = false;
+  password = false;
+  error = 'You need to log in';
   delay = model<number>(500);
   execute = model<string>(new Date().toString());
 
@@ -25,6 +28,12 @@ export class AppComponent {
 
   resetTime() {
     this.execute.set(new Date().toString())
+  }
+
+  setPassword(password: string) {
+    this.flipDotService.setPassword(password);
+    this.password = true;
+    this.showError = false;
   }
 
   flipDotService = inject(FlipdotService);

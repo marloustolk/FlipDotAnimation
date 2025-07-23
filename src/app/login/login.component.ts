@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FlipdotService } from '../flipdot.service';
 import { catchError } from 'rxjs';
@@ -10,6 +10,7 @@ import { catchError } from 'rxjs';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  loggedIn = output<string>();
   login = false;
   showError = false;
   show = false;
@@ -39,6 +40,7 @@ export class LoginComponent {
         })).subscribe(() => {
           this.showError = false;
           this.password = this.passwordText;
+          this.loggedIn.emit(this.password);
         });
     }
   }
