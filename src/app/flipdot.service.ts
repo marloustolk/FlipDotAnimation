@@ -9,12 +9,17 @@ import { BehaviorSubject, catchError, firstValueFrom, map, Observable, of, tap }
 export class FlipdotService {
   private readonly messageUrl = 'https://api.mobitec.gyzie.com/message';
   private readonly conceptUrl = 'https://api.mobitec.gyzie.com/concept';
+  private readonly passwordStorageKey = 'flip-dot-key';
   private http = inject(HttpClient);
   private password: string | undefined;
 
   readyForRequests$ = new BehaviorSubject<boolean>(false);
   concepts$ = new BehaviorSubject<Concept[]>([]);
   queuedMessages$ = new BehaviorSubject<Message[]>([]);
+
+  constructor() {
+    this.loadPasswordFromStorage();
+  }
 
   /**
    * @deprecated use sendMessage
@@ -111,11 +116,29 @@ export class FlipdotService {
     );
   }
 
-  setPassword(password: string) {
+  loadPasswordFromStorage() {
+    const password = sessionStorage.getItem(this.passwordStorageKey)
+    if (!password) {
+      return;
+    }
+    this.login(password);
+  }
+
+  login(password: string) {
     this.password = password;
     this.readyForRequests$.next(true);
     this.updateQueuedMessages().catch(err => console.error('Failed to update queued messages', err));
     this.updateConcepts().catch(err => console.error('Failed to update concepts', err));
+    sessionStorage.setItem(this.passwordStorageKey, password); // It's not really important to keep this key secret.
+  }
+
+  logout() {
+    this.readyForRequests$.next(false);
+    this.queuedMessages$.next([])
+    this.concepts$.next([]);
+    this.password = undefined;
+    sessionStorage.removeItem(this.passwordStorageKey);
+
   }
 
   private async updateQueuedMessages() {

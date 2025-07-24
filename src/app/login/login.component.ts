@@ -33,13 +33,17 @@ export class LoginComponent {
     if (this.showLogin() && password.length > 0) {
       this.service.getPasswordError(password).subscribe(error => {
         if (!error) {
-          this.service.setPassword(password);
+          this.service.login(password);
           this.close();
         } else {
           this.error.set(error);
         }
       });
     }
+  }
+
+  logout() {
+    this.service.logout();
   }
 
   private close() {
