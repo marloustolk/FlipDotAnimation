@@ -1,47 +1,52 @@
-import { Component, ElementRef, HostListener, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, model, output, Signal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FlipdotService } from '../flipdot.service';
 import { catchError } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-login',
   imports: [FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
-  loggedIn = output<string>();
-  login = false;
-  showError = false;
-  show = false;
-  passwordText = '';
-  password: string | undefined;
-  errorPassword = 'Wrong password';
+  private readonly service = inject(FlipdotService);
+  private readonly eRef = inject(ElementRef);
 
-  constructor(private eRef: ElementRef, private service: FlipdotService) {
-  }
+  protected showLogin = signal(false);
+  protected showPassword = model(false);
+  protected error = signal<string|null>(null);
+  protected passwordText = model('');
+  protected loggedIn = toSignal(this.service.readyForRequests$)
 
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
     if (!this.eRef.nativeElement.contains(event.target)) {
-      this.showError = false;
-      this.login = false;
+      this.close();
     }
   }
 
   enterPassword(event: SubmitEvent) {
     event.preventDefault();
-    if (this.login && this.passwordText.length > 0) {
-      this.service.get(this.passwordText).pipe(
-        catchError((err) => {
-          console.error('Error:', err);
-          this.showError = true;
-          return '';
-        })).subscribe(() => {
-          this.showError = false;
-          this.password = this.passwordText;
-          this.loggedIn.emit(this.password);
-        });
+    const password = this.passwordText();
+    if (this.showLogin() && password.length > 0) {
+      this.service.getPasswordError(password).subscribe(error => {
+        if (!error) {
+          this.service.setPassword(password);
+          this.close();
+        } else {
+          this.error.set(error);
+        }
+      });
     }
+  }
+
+  private close() {
+    this.error.set(null);
+    this.showLogin.set(false);
+    this.showPassword.set(false);
+    this.passwordText.set('');
   }
 }

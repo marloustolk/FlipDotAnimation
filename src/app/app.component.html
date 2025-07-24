@@ -1,4 +1,4 @@
-<app-login (loggedIn)="setPassword($event)"></app-login>
+<app-login></app-login>
 <div class="title">{{ title }}</div>
 <app-display #display [rows]="rowCount" [columns]="columnCount"></app-display>
 <div class="buttons">
@@ -28,7 +28,7 @@
 } @else {
 <div class="menu">
   <div class="space">
-    <label for="execute">execute at </label>
+    <label for="execute">execute at</label>
     <input
       type="datetime-local"
       id="execute"
@@ -36,26 +36,15 @@
       (ngModelChange)="execute.set($event)"
     />
   </div>
-  @if (showError) {
-  <small style="color: red">{{ error }}</small>
+  @if (!loggedIn()) {
+    <small style="color: yellow">You must login before you can send your creation</small>
+  } @else {
+    <button (click)="flipDotService.sendPixels(display.flipdots, delay(), executeAt())">
+      send
+    </button>
+    <button (click)="flipDotService.sendAnimation(columnCount, delay(), executeAt())">
+      send animation
+    </button>
   }
-  <button
-    (click)="
-      password
-        ? flipDotService.sendPixels(display.flipdots, delay(), executeAt())
-        : (showError = true)
-    "
-  >
-    send
-  </button>
-  <button
-    (click)="
-      password
-        ? flipDotService.sendAnimation(columnCount, delay(), executeAt())
-        : (showError = true)
-    "
-  >
-    send animation
-  </button>
 </div>
 }
