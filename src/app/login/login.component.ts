@@ -29,8 +29,8 @@ export class LoginComponent {
     }
   }
 
-  @HostListener('document:keydown.enter', ['$event'])
-  enterPassword() {
+  enterPassword(event: SubmitEvent) {
+    event.preventDefault();
     if (this.login && this.passwordText.length > 0) {
       this.service.get(this.passwordText).pipe(
         catchError((err) => {
