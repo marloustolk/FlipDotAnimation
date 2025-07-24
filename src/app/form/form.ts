@@ -62,7 +62,7 @@ export class Form {
   });
 
   private pixels = computed(() =>
-    this.image() ? new Pixels(images[this.imageValue()]) : this.letterPixels()
+    this.image() ? Pixels.fromPixelString(images[this.imageValue()]) : this.letterPixels()
   );
 
   private filterLetters() {
@@ -73,12 +73,12 @@ export class Form {
 
   private letterPixels() {
     const font = this.font();
-    const fontHeight = new Pixels(font['a']).rowCount;
+    const fontHeight = Pixels.fromPixelString(font['a']).rowCount;
 
     let content: string[] = new Array(fontHeight).fill('');
 
     for (let letter of this.filterLetters()) {
-      const letterPixels = new Pixels(font[letter]);
+      const letterPixels = Pixels.fromPixelString(font[letter]);
       for (let row = 0; row < fontHeight; row++) {
         content[row] += content[row] ? '0' : '';
         content[row] += letterPixels.array[row % (fontHeight + 1)].join('');
@@ -97,7 +97,7 @@ export class Form {
     } else {
       content[0] += '0'.repeat(this.columns() - content[0].length);
     }
-    return new Pixels(content.join('\n'));
+    return Pixels.fromPixelString(content.join('\n'));
   }
 
   private lineToLong(content: string[]) {
@@ -118,7 +118,7 @@ export class Form {
   }
 
   private indexLastSpace(content: string[]) {
-    const space = new Pixels(this.font()[' '].split('\n').map(row => row + '0').join('\n'));
+    const space = Pixels.fromPixelString(this.font()[' '].split('\n').map(row => row + '0').join('\n'));
     const rowsToCheck = content.slice(content.length - space.rowCount);
     for (let column = this.columns() - space.columnCount; column > 0; column--) {
       const stringRow = space.array[0].join('');

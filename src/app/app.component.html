@@ -1,50 +1,66 @@
-<app-login></app-login>
-<div class="title">{{ title }}</div>
-<app-display #display [rows]="rowCount" [columns]="columnCount"></app-display>
-<div class="buttons">
-  <button (click)="add = 'text'; display.animations = false">text</button>
-  <button (click)="add = 'image'; display.animations = false">image</button>
-  <button
-    (click)="
-      display.clear(); display.animations = false; add = undefined; resetTime()
-    "
-  >
-    clear
-  </button>
-  <button (click)="display.animation()">animation</button>
-  <button (click)="display.print()">print</button>
-</div>
-@if (add) {
-<app-form
-  (preview)="display.add($event, true)"
-  (add)="
-    display.add($event); add = undefined; display.clearPreview(); resetTime()
-  "
-  (cancel)="add = undefined; display.clearPreview(); resetTime()"
-  [image]="add === 'image'"
-  [rows]="rowCount"
-  [columns]="columnCount"
-></app-form>
-} @else {
-<div class="menu">
-  <div class="space">
-    <label for="execute">execute at</label>
-    <input
-      type="datetime-local"
-      id="execute"
-      [ngModel]="execute()"
-      (ngModelChange)="execute.set($event)"
-    />
+<header>
+  <app-login></app-login>
+  <h1>{{ title }}</h1>
+</header>
+
+<main>
+  <div class="display-container">
+    <app-display #display [rows]="rowCount" [columns]="columnCount" [allowEdit]="true"></app-display>
   </div>
-  @if (!loggedIn()) {
-    <small style="color: yellow">You must login before you can send your creation</small>
+
+  <div class="buttons">
+    <button (click)="add = 'text'; display.animations.set(false)">text</button>
+    <button (click)="add = 'image'; display.animations.set(false)">image</button>
+    <button
+      (click)="
+        display.clear(); display.animations.set(false); add = undefined; resetTime()
+      "
+    >
+      clear
+    </button>
+    <button (click)="display.animation()">animation</button>
+    <button (click)="display.print()">print</button>
+  </div>
+
+  @if (add) {
+    <app-form
+      (preview)="display.add($event, true)"
+      (add)="
+        display.add($event); add = undefined; display.clearPreview(); resetTime()
+      "
+      (cancel)="add = undefined; display.clearPreview(); resetTime()"
+      [image]="add === 'image'"
+      [rows]="rowCount"
+      [columns]="columnCount"
+    ></app-form>
   } @else {
-    <button (click)="flipDotService.sendPixels(display.flipdots, delay(), executeAt())">
-      send
-    </button>
-    <button (click)="flipDotService.sendAnimation(columnCount, delay(), executeAt())">
-      send animation
-    </button>
+    <div class="menu">
+      <div class="space">
+        <label for="execute">execute at</label>
+        <input
+          type="datetime-local"
+          id="execute"
+          [ngModel]="execute()"
+          (ngModelChange)="execute.set($event)"
+        />
+      </div>
+      @if (!loggedIn()) {
+        <small style="color: var(--c-primary)">You must login before you can send your creation</small>
+      } @else {
+        <button (click)="flipDotService.sendPixels(display.flipdots(), delay(), executeAt())">
+          send
+        </button>
+        <button (click)="flipDotService.sendAnimation(columnCount, delay(), executeAt())">
+          send animation
+        </button>
+        <button (click)="saveAsConcept()">
+          save as concept
+        </button>
+      }
+    </div>
   }
-</div>
-}
+</main>
+
+<aside>
+  <app-sidebar (loadConcept)="loadConcept($event)"></app-sidebar>
+</aside>

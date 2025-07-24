@@ -1,0 +1,11 @@
+<ul>
+@for (concept of concepts(); track concept.id) {
+  <li>
+    <app-preview [frames]="concept.frames" [attr.aria-label]="concept.name" />
+    <div class="controls">
+      <button type="button" (click)="load(concept)">Load</button>
+      <button type="button" (click)="delete(concept.id)">Delete</button>
+    </div>
+  </li>
+}
+</ul>

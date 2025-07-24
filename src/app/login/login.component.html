@@ -1,6 +1,6 @@
 <div class="login">
   @if (loggedIn()) {
-    <p style="color: yellow">authenticated</p>
+    <p style="color: var(--c-primary)">authenticated</p>
   } @else if (showLogin()) {
   <form id="password" class="password" (ngSubmit)="enterPassword($event)">
     <input

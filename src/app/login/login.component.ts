@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, model, output, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, model, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FlipdotService } from '../flipdot.service';
-import { catchError } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({

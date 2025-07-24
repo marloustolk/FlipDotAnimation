@@ -13,7 +13,7 @@ export function createAnimation(columns: number) {
 }
 
 function position(byteString: string, columns: number, pixels: number) {
-  return new Pixels(byteString).array
+  return Pixels.fromPixelString(byteString).array
     .map((row) => move(row, columns, pixels))
     .join('\n');
 }

@@ -1,28 +1,34 @@
+:host {
+  font-size: 1rem; // Use for scaling
+}
+
 .input-board {
-    width: 84rem;
-    border: 5px solid black;
-    margin: 2rem auto;
-  }
+  width: 84em;
+  border: 0.3125em solid black;
+}
   
-  .row {
-    display: grid;
-    grid-template-columns: repeat(112, 0.75rem);
+.row {
+  display: grid;
+  grid-template-columns: repeat(112, 0.75em);
+}
+
+.pixel {
+  user-select: none;
+  background-color: black;
+  color: white;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+
+  &.toggle {
+    background-color: var(--c-primary);
   }
-  
-  .pixel {
-    user-select: none;
-    background-color: black;
-    color: white;
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 50%;
-  
-    &:hover,
-    &.hover {
-      background-color: gray;
-    }
-    &.toggle {
-      background-color: yellow;
-    }
+}
+
+.editable .pixel {
+  &:hover,
+  &.hover {
+    background-color: gray;
   }
+}
   

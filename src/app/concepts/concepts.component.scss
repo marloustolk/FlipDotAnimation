@@ -1,0 +1,35 @@
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+li {
+    position: relative;
+    display: inline-block;
+}
+
+.controls {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    gap: 1rem;
+    transition: opacity 0.3s;
+    opacity: 0;
+
+    &:hover,
+    &:focus-within {
+        opacity: 1;
+        transition: opacity 0.1s;
+    }
+}
+
+app-preview {
+    font-size: 0.28rem;
+}

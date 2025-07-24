@@ -1,6 +1,7 @@
 .login {
   position: absolute;
   right: 10px;
+  top: 10px;
 }
 
 .password {
@@ -8,7 +9,7 @@
 }
 
 small {
-  color: yellow;
+  color: var(--c-primary);
   font-family: arcade;
   font-size: large;
   margin-left: 10px;
