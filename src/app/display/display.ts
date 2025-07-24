@@ -17,7 +17,6 @@ export class Display implements OnInit {
 
   flipdots = signal<PixelSet>([]);
   animations = signal(false);
-  allowEdit = input(false);
 
   ngOnInit(): void {
     this.clear();

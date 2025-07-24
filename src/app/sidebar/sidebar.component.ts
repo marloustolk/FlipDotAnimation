@@ -1,8 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, input, OnInit, output, signal, untracked, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Concept, MessageFrame, Pixels } from '../models';
-import { Display } from "../display/display";
-import { displayRowCount, displayColumnCount } from '../constants';
+import { Concept } from '../models';
 import { ConceptsComponent } from "../concepts/concepts.component";
 
 @Component({

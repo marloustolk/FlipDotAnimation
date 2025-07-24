@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, input, OnInit, signal, untracked, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, input, OnInit, signal, untracked, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageFrame, Pixels } from '../models';
 import { Display } from "../display/display";
@@ -6,13 +6,20 @@ import { displayRowCount, displayColumnCount } from '../constants';
 
 @Component({
   selector: 'app-preview',
-  imports: [FormsModule, Display],
+  imports: [FormsModule],
   template: `
-    <app-display #display [rows]="rowCount" [columns]="columnCount" />
+    <canvas #canvas [height]="rowCount" [width]="columnCount"></canvas>
   `,
   styles: `
-    app-display {
-      font-size: inherit;
+    :host {
+      display: block;
+    }
+
+    canvas {
+      width: 100%;
+      image-rendering: pixelated;
+      border: solid 5px black;
+      box-sizing: border-box;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -21,16 +28,34 @@ export class PreviewComponent implements AfterViewInit {
   protected rowCount = displayRowCount;
   protected columnCount = displayColumnCount;
 
-  display = viewChild.required<Display>('display');
+  canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   frames = input.required<MessageFrame[]>();
 
-  ngAfterViewInit(): void {
-    const pixels = new Pixels(this.frames()[0]?.pixels ?? []);
+  constructor() {
+    effect(() => this.drawPreview());
+  }
 
-    this.display().add({
-      pixels,
-      offsetX: 0,
-      offsetY: 0,
-    });
+  ngAfterViewInit(): void {
+    this.drawPreview();
+  }
+
+  drawPreview() {
+    const ctx = this.canvas().nativeElement.getContext('2d');
+    if (!ctx) {
+      return;
+    }
+
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, this.columnCount, this.rowCount);
+
+    ctx.fillStyle = 'yellow';
+    this.frames().at(0)?.pixels.forEach((row, rowIndex) => {
+      row.forEach((pixel, columnIndex) => {
+        if (pixel !== 1) {
+          return;
+        }
+        ctx.fillRect(columnIndex, rowIndex, 1, 1);
+      })
+    }); 
   }
 }

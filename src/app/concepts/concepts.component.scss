@@ -4,8 +4,9 @@ ul {
     margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    align-items: stretch;
+    gap: 0.1rem;
+    margin: 0.75rem;
 }
 
 li {
@@ -28,8 +29,4 @@ li {
         opacity: 1;
         transition: opacity 0.1s;
     }
-}
-
-app-preview {
-    font-size: 0.28rem;
 }

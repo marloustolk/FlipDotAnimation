@@ -1,21 +1,17 @@
-<div class="input-board" [class.editable]="allowEdit()">
+<div class="input-board">
   @for (row of flipdots(); track rowIndex; let rowIndex = $index) {
   <div class="row">
     @for (pixel of row;track columnIndex; let columnIndex = $index) {
-      @if (allowEdit() && previewDots()[rowIndex][columnIndex] === 1) {
+      @if (previewDots()[rowIndex][columnIndex] === 1) {
         <div class="pixel hover"></div>
       } @else {
-        @if (allowEdit()) {
-          <div
-            class="pixel"
-            [ngClass]="pixel === 1 ? 'toggle' : ''"
-            (click)="toggle(rowIndex, columnIndex)"
-            (contextmenu)="$event.preventDefault()"
-            (mouseover)="multiToggle($event, rowIndex, columnIndex)"
-          ></div>
-        } @else {
-          <div class="pixel" [ngClass]="pixel === 1 ? 'toggle' : ''"></div>
-        }
+        <div
+          class="pixel"
+          [ngClass]="pixel === 1 ? 'toggle' : ''"
+          (click)="toggle(rowIndex, columnIndex)"
+          (contextmenu)="$event.preventDefault()"
+          (mouseover)="multiToggle($event, rowIndex, columnIndex)"
+        ></div>
       }
     }
   </div>

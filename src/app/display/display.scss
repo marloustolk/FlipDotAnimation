@@ -22,15 +22,12 @@
   margin: 0.1em;
   border-radius: 50%;
 
-  &.toggle {
-    background-color: var(--c-primary);
-  }
-}
-
-.editable .pixel {
   &:hover,
   &.hover {
     background-color: gray;
   }
+
+  &.toggle {
+    background-color: var(--c-primary);
+  }
 }
-  
