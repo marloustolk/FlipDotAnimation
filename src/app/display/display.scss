@@ -5,6 +5,7 @@
 .input-board {
   width: 84em;
   border: 0.3125em solid black;
+  background-color: black;
 }
   
 .row {
@@ -14,10 +15,11 @@
 
 .pixel {
   user-select: none;
-  background-color: black;
+  background-color: rgb(10, 10, 10);
   color: white;
-  width: 0.75em;
-  height: 0.75em;
+  width: 0.65em;
+  height: 0.65em;
+  margin: 0.1em;
   border-radius: 50%;
 
   &.toggle {
