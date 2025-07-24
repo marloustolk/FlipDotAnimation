@@ -95,7 +95,7 @@ export class Display implements OnInit {
   async animation() {
     this.animations.set(!this.animations());
     for (const p of createAnimation(this.columns())) {
-      if (!this.animations) break;
+      if (!this.animations()) break;
       this.clear();
 
       this.flipdots.update(signalValue => {
