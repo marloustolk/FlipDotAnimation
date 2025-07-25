@@ -14,20 +14,26 @@
 }
 
 .pixel {
+  position: relative;
   user-select: none;
-  background-color: rgb(10, 10, 10);
-  color: white;
-  width: 0.65em;
-  height: 0.65em;
-  margin: 0.1em;
-  border-radius: 50%;
+  width: 0.75em;
+  height: 0.75em;
+  
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    inset: 0.1em;
+    background-color: rgb(10, 10, 10);
+    border-radius: 50%;
+  }
 
-  &:hover,
-  &.hover {
+  &:hover::before,
+  &.hover::before {
     background-color: gray;
   }
 
-  &.toggle {
+  &.toggle::before {
     background-color: var(--c-primary);
   }
 }
