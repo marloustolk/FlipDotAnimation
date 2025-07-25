@@ -1,12 +1,34 @@
-export interface FlipDotInfo {
-  executeAt: string;
-  frames: Frame[];
+export type PixelSet = (0|1)[][]
+
+export type MessageFrame = {
+    delayMs: number;
+    pixels: PixelSet;
 }
 
-export interface Frame {
-  delayMs: number;
-  pixels: number[][];
+export type Message = {
+    id: number;
+    executeAt: string;
+    frames: MessageFrame[];
 }
+
+export type Concept = {
+    id: number;
+    name: string;
+    frames: MessageFrame[];
+}
+
+export type CreateMessageDto = Omit<Message, 'id'>;
+export type CreateConceptDto = Omit<Concept, 'id'>;
+
+// export interface FlipDotInfo {
+//   executeAt: string;
+//   frames: Frame[];
+// }
+
+// export interface Frame {
+//   delayMs: number;
+//   pixels: number[][];
+// }
 
 export interface Content {
   pixels: Pixels;
@@ -15,12 +37,10 @@ export interface Content {
 }
 
 export class Pixels {
-  array: number[][];
+  array: PixelSet;
 
-  constructor(pixelString: string) {
-    this.array = pixelString
-      .split('\n')
-      .map((row) => row.split('').map((pixel) => Number(pixel)));
+  constructor(pixels: PixelSet) {
+    this.array = pixels;
   }
 
   get rowCount() {
@@ -29,5 +49,12 @@ export class Pixels {
 
   get columnCount() {
     return this.array[0].length;
+  }
+
+  static fromPixelString(pixelString: string): Pixels {
+    const array = pixelString
+      .split('\n')
+      .map((row) => row.split('').map((pixel) => pixel === '1' ? 1 : 0));
+    return new Pixels(array);
   }
 }

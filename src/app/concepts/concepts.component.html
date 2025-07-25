@@ -1,0 +1,11 @@
+<ul>
+@for (concept of concepts(); track concept.id) {
+  <li>
+    <app-preview [frames]="concept.frames" [attr.aria-label]="concept.name" />
+    <div class="controls">
+      <app-confirm-button warning="Loading a concept will remove your current creation. Do you wish to continue?" (confirm)="load(concept)">Load</app-confirm-button>
+      <app-confirm-button warning="Are you sure you wish to delete this concept?" (confirm)="delete(concept.id)">Delete</app-confirm-button>
+    </div>
+  </li>
+}
+</ul>
