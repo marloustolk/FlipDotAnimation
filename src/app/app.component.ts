@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, viewChild } from '@angular/core';
+import { Component, computed, inject, model, signal, viewChild } from '@angular/core';
 import { Display } from './display/display';
 import { Form } from './form/form';
 import { FlipdotService } from './flipdot.service';
@@ -9,10 +9,11 @@ import { createAnimation } from './animation';
 import { displayColumnCount, displayRowCount } from './constants';
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { Concept, MessageFrame, Pixels } from './models';
+import { ExecuteAtComponent } from "./execute-at/execute-at.component";
 
 @Component({
   selector: 'app-root',
-  imports: [Display, Form, FormsModule, LoginComponent, SidebarComponent],
+  imports: [Display, Form, FormsModule, LoginComponent, SidebarComponent, ExecuteAtComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -22,7 +23,9 @@ export class AppComponent {
   protected columnCount = displayColumnCount;
   protected add: 'text' | 'image' | undefined;
   delay = model<number>(500);
-  execute = model<string>(new Date().toString());
+  executeAt = signal<string|null>('now');
+
+  executeAtComponent = viewChild(ExecuteAtComponent)
 
   createAnimation: MessageFrame[] = createAnimation(this.columnCount).map((image) => {
     return {
@@ -31,13 +34,8 @@ export class AppComponent {
     };
   });
 
-  executeAt = computed(() => {
-    let date = new Date(this.execute());
-    return date > new Date() ? date.toISOString() : 'now';
-  });
-
   resetTime() {
-    this.execute.set(new Date().toString())
+    this.executeAtComponent()?.reset();
   }
 
   flipDotService = inject(FlipdotService);
@@ -47,6 +45,23 @@ export class AppComponent {
 
   loadConcept(concept: Concept) {
     this.display().load(concept);
+  }
+
+  sendMessage() {
+    const executeAt = this.executeAt();
+    if (!executeAt) {
+      return;
+    }
+
+    this.flipDotService.sendMessage([{ delayMs: this.delay(), pixels: this.display().flipdots() }], executeAt).subscribe()
+  }
+
+  sendAnimation() {
+    const executeAt = this.executeAt();
+    if (!executeAt) {
+      return;
+    }
+    this.flipDotService.sendMessage(this.createAnimation, executeAt).subscribe()
   }
 
   saveAsConcept() {
