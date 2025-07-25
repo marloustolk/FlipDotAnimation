@@ -4,10 +4,11 @@ import { FlipdotService } from '../flipdot.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PreviewComponent } from "../preview/preview.component";
 import { Concept } from '../models';
+import { ConfirmButtonComponent } from "../confirm-button/confirm-button.component";
 
 @Component({
   selector: 'app-concepts',
-  imports: [FormsModule, PreviewComponent],
+  imports: [FormsModule, PreviewComponent, ConfirmButtonComponent],
   templateUrl: './concepts.component.html',
   styleUrl: './concepts.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
