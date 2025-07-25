@@ -13,6 +13,11 @@
   --c-background: #1a1918
 }
 
+:focus-visible {
+  outline: solid 2px var(--c-primary);
+  outline-offset: 0.1em;
+}
+
 body {
   background-color: var(--c-background);
   font-family: superPixel;
@@ -44,6 +49,17 @@ button {
   font-size: 2rem;
   color: var(--c-primary);
   font-family: arcade;
+  transition: background-color 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #24221e;
+  }
+
+  &:disabled {
+    background-color: #3d3b34;
+    cursor: default;
+  }
 }
 
 .menu {

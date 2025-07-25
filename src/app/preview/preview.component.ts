@@ -20,6 +20,7 @@ import { displayRowCount, displayColumnCount } from '../constants';
       image-rendering: pixelated;
       border: solid 5px black;
       box-sizing: border-box;
+      display: block;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -5,13 +5,13 @@ ul {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 0.1rem;
+    gap: 0.3rem;
     margin: 0.75rem;
 }
 
 li {
     position: relative;
-    display: inline-block;
+    display: block;
 }
 
 .controls {
@@ -19,10 +19,11 @@ li {
     inset: 0;
     display: flex;
     justify-content: center;
-    align-self: center;
+    align-items: center;
     gap: 1rem;
     transition: opacity 0.3s;
     opacity: 0;
+    background-color: rgba(0, 0, 0, 70%);
 
     &:hover,
     &:focus-within {
