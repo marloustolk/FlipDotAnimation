@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, model, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, effect, ElementRef, EnvironmentInjector, HostListener, inject, input, model, runInInjectionContext, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FlipdotService } from '../flipdot.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -11,8 +11,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
+  private environmentInjector = inject(EnvironmentInjector);
   private readonly service = inject(FlipdotService);
   private readonly eRef = inject(ElementRef);
+
+  private readonly passwordInput = viewChild<ElementRef<HTMLInputElement>>('input');
 
   protected showLogin = signal(false);
   protected showPassword = model(false);
@@ -44,6 +47,14 @@ export class LoginComponent {
 
   logout() {
     this.service.logout();
+  }
+
+  showLoginForm() {
+    this.showLogin.set(true);
+
+    runInInjectionContext(this.environmentInjector, () => {
+      afterNextRender({ write: () => this.passwordInput()?.nativeElement.focus() })
+    });
   }
 
   private close() {
