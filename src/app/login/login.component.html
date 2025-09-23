@@ -1,26 +1,30 @@
 <div class="login">
-  @if (password) {
-  <p style="color: yellow">authenticated</p>
-  } @else if (login) {
-  <div id="password" class="password">
+  @if (loggedIn()) {
+    <button style="color: var(--c-primary)" (click)="logout()">Logout</button>
+  } @else if (showLogin()) {
+  <form id="password" class="password" (ngSubmit)="enterPassword($event)">
     <input
       #input
-      [type]="show ? 'text' : 'password'"
+      name="password"
+      [type]="showPassword() ? 'text' : 'password'"
+      autocomplete="current-password"
       [(ngModel)]="passwordText"
     />
     <div>
       <input
         id="show"
+        name="show-password"
         type="checkbox"
-        [(ngModel)]="show"
+        [(ngModel)]="showPassword"
         (click)="input.focus()"
       />
-      <small for="show">show</small>
+      <label for="show"><small>show</small></label>
     </div>
-    @if (showError) {<small class="error">{{ errorPassword }}</small>
+    @if (error()) {
+      <small class="error">{{ error() }}</small>
     }
-  </div>
+  </form>
   } @else {
-  <button (click)="login = true">login</button>
+  <button (click)="showLoginForm()">login</button>
   }
 </div>

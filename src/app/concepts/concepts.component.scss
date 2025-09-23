@@ -1,0 +1,33 @@
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.3rem;
+    margin: 0.75rem;
+}
+
+li {
+    position: relative;
+    display: block;
+}
+
+.controls {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    transition: opacity 0.3s;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 70%);
+
+    &:hover,
+    &:focus-within {
+        opacity: 1;
+        transition: opacity 0.1s;
+    }
+}
