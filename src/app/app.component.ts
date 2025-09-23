@@ -5,10 +5,10 @@ import { FlipdotService } from './flipdot.service';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from "./login/login.component";
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ConceptsComponent } from "./concepts/concepts.component";
+import { createAnimation } from './animation';
 import { displayColumnCount, displayRowCount } from './constants';
 import { SidebarComponent } from "./sidebar/sidebar.component";
-import { Concept } from './models';
+import { Concept, MessageFrame, Pixels } from './models';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +23,13 @@ export class AppComponent {
   protected add: 'text' | 'image' | undefined;
   delay = model<number>(500);
   execute = model<string>(new Date().toString());
+
+  createAnimation: MessageFrame[] = createAnimation(this.columnCount).map((image) => {
+    return {
+      delayMs: this.delay(),
+      pixels: Pixels.fromPixelString(image).array,
+    };
+  });
 
   executeAt = computed(() => {
     let date = new Date(this.execute());
@@ -43,6 +50,6 @@ export class AppComponent {
   }
 
   saveAsConcept() {
-    this.flipDotService.createConcept([{ delayMs: 0, pixels: this.display().flipdots()}], new Date().toISOString()).subscribe()
+    this.flipDotService.createConcept([{ delayMs: 0, pixels: this.display().flipdots() }], new Date().toISOString()).subscribe();
   }
 }

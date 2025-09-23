@@ -21,28 +21,6 @@ export class FlipdotService {
     this.loadPasswordFromStorage();
   }
 
-  /**
-   * @deprecated use sendMessage
-   */
-  sendPixels(pixels: PixelSet, delayMs: number, executeAt: string) {
-    this.sendMessage([{ delayMs, pixels }], executeAt).subscribe();
-  }
-
-  /**
-   * @deprecated use sendMessage
-   */
-  sendAnimation(columns: number, delayMs: number, executeAt: string) {
-    this.sendMessage(
-      createAnimation(columns).map((image) => {
-        return {
-          delayMs,
-          pixels: Pixels.fromPixelString(image).array,
-        };
-      }),
-      executeAt
-    ).subscribe();
-  }
-
   sendMessage(frames: MessageFrame[], executeAt: string, headers = this.getHeaders()) {
     console.log('execute at', executeAt, frames);
     const body: CreateMessageDto = {
@@ -97,23 +75,23 @@ export class FlipdotService {
   /**
    * Resolves to null if connection succeeds and an error message if it fails
    */
-  getPasswordError(password: string): Observable<string|null> {
+  getPasswordError(password: string): Observable<string | null> {
     return this.getQueuedMessages({ 'auth-key': password })
-    .pipe(
-      map(() => null),
-      catchError((err) => {
-        if (
-          typeof err === 'object' &&
-          'status' in err &&
-          typeof err.status === 'number' &&
-          (err.status === 401 || err.status === 403)
-        ) {
-          return of('Invalid password')
-        }
-        console.error('Unknown login error:', err);
-        return of('Unknown error');
-      }),
-    );
+      .pipe(
+        map(() => null),
+        catchError((err) => {
+          if (
+            typeof err === 'object' &&
+            'status' in err &&
+            typeof err.status === 'number' &&
+            (err.status === 401 || err.status === 403)
+          ) {
+            return of('Invalid password')
+          }
+          console.error('Unknown login error:', err);
+          return of('Unknown error');
+        }),
+      );
   }
 
   loadPasswordFromStorage() {

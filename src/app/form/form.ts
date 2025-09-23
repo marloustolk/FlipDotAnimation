@@ -95,7 +95,7 @@ export class Form {
         return whitespace + row + whitespace;
       })
     } else {
-      content[0] += '0'.repeat(this.columns() - content[0].length);
+      content = content.map(row => row + '0'.repeat(this.columns() - row.length));
     }
     return Pixels.fromPixelString(content.join('\n'));
   }

@@ -1,34 +1,24 @@
-export type PixelSet = (0|1)[][]
+export type PixelSet = (0 | 1)[][]
 
 export type MessageFrame = {
-    delayMs: number;
-    pixels: PixelSet;
+  delayMs: number;
+  pixels: PixelSet;
 }
 
 export type Message = {
-    id: number;
-    executeAt: string;
-    frames: MessageFrame[];
+  id: number;
+  executeAt: string;
+  frames: MessageFrame[];
 }
 
 export type Concept = {
-    id: number;
-    name: string;
-    frames: MessageFrame[];
+  id: number;
+  name: string;
+  frames: MessageFrame[];
 }
 
 export type CreateMessageDto = Omit<Message, 'id'>;
 export type CreateConceptDto = Omit<Concept, 'id'>;
-
-// export interface FlipDotInfo {
-//   executeAt: string;
-//   frames: Frame[];
-// }
-
-// export interface Frame {
-//   delayMs: number;
-//   pixels: number[][];
-// }
 
 export interface Content {
   pixels: Pixels;

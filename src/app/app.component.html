@@ -5,15 +5,24 @@
 
 <main>
   <div class="display-container">
-    <app-display #display [rows]="rowCount" [columns]="columnCount"></app-display>
+    <app-display
+      #display
+      [rows]="rowCount"
+      [columns]="columnCount"
+    ></app-display>
   </div>
 
   <div class="buttons">
     <button (click)="add = 'text'; display.animations.set(false)">text</button>
-    <button (click)="add = 'image'; display.animations.set(false)">image</button>
+    <button (click)="add = 'image'; display.animations.set(false)">
+      image
+    </button>
     <button
       (click)="
-        display.clear(); display.animations.set(false); add = undefined; resetTime()
+        display.clear();
+        display.animations.set(false);
+        add = undefined;
+        resetTime()
       "
     >
       clear
@@ -23,41 +32,48 @@
   </div>
 
   @if (add) {
-    <app-form
-      (preview)="display.add($event, true)"
-      (add)="
-        display.add($event); add = undefined; display.clearPreview(); resetTime()
-      "
-      (cancel)="add = undefined; display.clearPreview(); resetTime()"
-      [image]="add === 'image'"
-      [rows]="rowCount"
-      [columns]="columnCount"
-    ></app-form>
+  <app-form
+    (preview)="display.add($event, true)"
+    (add)="
+      display.add($event); add = undefined; display.clearPreview(); resetTime()
+    "
+    (cancel)="add = undefined; display.clearPreview(); resetTime()"
+    [image]="add === 'image'"
+    [rows]="rowCount"
+    [columns]="columnCount"
+  ></app-form>
   } @else {
-    <div class="menu">
-      <div class="space">
-        <label for="execute">execute at</label>
-        <input
-          type="datetime-local"
-          id="execute"
-          [ngModel]="execute()"
-          (ngModelChange)="execute.set($event)"
-        />
-      </div>
-      @if (!loggedIn()) {
-        <small style="color: var(--c-primary)">You must login before you can send your creation</small>
-      } @else {
-        <button (click)="flipDotService.sendPixels(display.flipdots(), delay(), executeAt())">
-          send
-        </button>
-        <button (click)="flipDotService.sendAnimation(columnCount, delay(), executeAt())">
-          send animation
-        </button>
-        <button (click)="saveAsConcept()">
-          save as concept
-        </button>
-      }
+  <div class="menu">
+    <div class="space">
+      <label for="execute">execute at</label>
+      <input
+        type="datetime-local"
+        id="execute"
+        [ngModel]="execute()"
+        (ngModelChange)="execute.set($event)"
+      />
     </div>
+    @if (!loggedIn()) {
+    <small style="color: var(--c-primary)"
+      >You must login before you can send your creation</small
+    >
+    } @else {
+    <button
+      (click)="
+        flipDotService.sendMessage(
+          [{ delayMs: delay(), pixels: display.flipdots() }],
+          executeAt()
+        )
+      "
+    >
+      send
+    </button>
+    <button (click)="flipDotService.sendMessage(createAnimation, executeAt())">
+      send animation
+    </button>
+    <button (click)="saveAsConcept()">save as concept</button>
+    }
+  </div>
   }
 </main>
 
