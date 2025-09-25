@@ -1,4 +1,6 @@
 .angular
 .DS_Store
+.idea
+.npmrc
 dist
 node_modules

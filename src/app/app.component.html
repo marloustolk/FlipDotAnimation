@@ -60,15 +60,21 @@
     } @else {
     <button
       (click)="
-        flipDotService.sendMessage(
-          [{ delayMs: delay(), pixels: display.flipdots() }],
-          executeAt()
-        )
+        flipDotService
+          .sendMessage(
+            [{ delayMs: delay(), pixels: display.flipdots() }],
+            executeAt()
+          )
+          .subscribe()
       "
     >
       send
     </button>
-    <button (click)="flipDotService.sendMessage(createAnimation, executeAt())">
+    <button
+      (click)="
+        flipDotService.sendMessage(createAnimation, executeAt()).subscribe()
+      "
+    >
       send animation
     </button>
     <button (click)="saveAsConcept()">save as concept</button>
