@@ -7,7 +7,7 @@
   border: 0.3125em solid black;
   background-color: black;
 }
-  
+
 .row {
   display: grid;
   grid-template-columns: repeat(112, 0.75em);
@@ -18,12 +18,12 @@
   user-select: none;
   width: 0.75em;
   height: 0.75em;
-  
+
   &::before {
     content: '';
     display: block;
     position: absolute;
-    inset: 0.1em;
+    inset: 0.05em;
     background-color: rgb(10, 10, 10);
     border-radius: 50%;
   }
