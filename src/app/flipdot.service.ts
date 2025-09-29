@@ -95,19 +95,24 @@ export class FlipdotService {
   }
 
   loadPasswordFromStorage() {
-    const password = sessionStorage.getItem(this.passwordStorageKey)
+    const sessionPassword = sessionStorage.getItem(this.passwordStorageKey)
+    const localPassword = localStorage.getItem(this.passwordStorageKey)
+    const password = sessionPassword || localPassword;
     if (!password) {
       return;
     }
     this.login(password);
   }
 
-  login(password: string) {
+  login(password: string, { rememberMe }: { rememberMe?: boolean } = {}) {
     this.password = password;
     this.readyForRequests$.next(true);
     this.updateQueuedMessages().catch(err => console.error('Failed to update queued messages', err));
     this.updateConcepts().catch(err => console.error('Failed to update concepts', err));
     sessionStorage.setItem(this.passwordStorageKey, password); // It's not really important to keep this key secret.
+    if (rememberMe) {
+      localStorage.setItem(this.passwordStorageKey, password);
+    }
   }
 
   logout() {
@@ -116,7 +121,7 @@ export class FlipdotService {
     this.concepts$.next([]);
     this.password = undefined;
     sessionStorage.removeItem(this.passwordStorageKey);
-
+    localStorage.removeItem(this.passwordStorageKey);
   }
 
   private async updateQueuedMessages() {

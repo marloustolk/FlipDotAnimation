@@ -5,12 +5,13 @@
   <form id="password" class="password" (ngSubmit)="enterPassword($event)">
     <input
       #input
+      class="password"
       name="password"
       [type]="showPassword() ? 'text' : 'password'"
       autocomplete="current-password"
       [(ngModel)]="passwordText"
     />
-    <div>
+    <div class="settings">
       <input
         id="show"
         name="show-password"
@@ -19,6 +20,14 @@
         (click)="input.focus()"
       />
       <label for="show"><small>show</small></label>
+
+      <input
+        id="remember"
+        name="remember-me"
+        type="checkbox"
+        [(ngModel)]="rememberMe"
+      />
+      <label for="remember"><small>remember me</small></label>
     </div>
     @if (error()) {
       <small class="error">{{ error() }}</small>
