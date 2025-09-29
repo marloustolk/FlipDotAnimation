@@ -5,6 +5,21 @@
 }
 
 .password {
+  width: max(10rem, 100%);
+  box-sizing: border-box;
+}
+
+.settings {
+  label {
+    margin-right: 1rem;
+  }
+
+  label:last-child {
+    margin-right: 0;
+  }
+}
+
+.password {
   display: grid;
 }
 
@@ -12,7 +27,7 @@ small {
   color: var(--c-primary);
   font-family: arcade;
   font-size: large;
-  margin-left: 10px;
+  margin-left: 0.5rem;
 
   &.error {
     color: red;
