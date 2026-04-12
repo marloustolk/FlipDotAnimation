@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Concept, CreateConceptDto, CreateMessageDto, Message, MessageFrame, Pixels, PixelSet } from './models';
-import { createAnimation } from './animation';
+import { Concept, CreateConceptDto, CreateMessageDto, Message, MessageFrame } from './models';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, firstValueFrom, map, Observable, of, tap } from 'rxjs';
 @Injectable({
