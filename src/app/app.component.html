@@ -45,39 +45,16 @@
   } @else {
   <div class="menu">
     <div class="space">
-      <label for="execute">execute at</label>
-      <input
-        type="datetime-local"
-        id="execute"
-        [ngModel]="execute()"
-        (ngModelChange)="execute.set($event)"
-      />
+      <app-execute-at (executeAtChange)="executeAt.set($event)"></app-execute-at>
     </div>
     @if (!loggedIn()) {
-    <small style="color: var(--c-primary)"
-      >You must login before you can send your creation</small
-    >
+      <small style="color: var(--c-primary)"
+        >You must login before you can send your creation</small
+      >
     } @else {
-    <button
-      (click)="
-        flipDotService
-          .sendMessage(
-            [{ delayMs: delay(), pixels: display.flipdots() }],
-            executeAt()
-          )
-          .subscribe()
-      "
-    >
-      send
-    </button>
-    <button
-      (click)="
-        flipDotService.sendMessage(createAnimation, executeAt()).subscribe()
-      "
-    >
-      send animation
-    </button>
-    <button (click)="saveAsConcept()">save as concept</button>
+      <button [disabled]="!executeAt()" (click)="sendMessage()">send</button>
+      <button [disabled]="!executeAt()" (click)="sendAnimation()">send animation</button>
+      <button (click)="saveAsConcept()">save as concept</button>
     }
   </div>
   }

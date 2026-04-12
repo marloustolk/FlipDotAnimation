@@ -1,0 +1,30 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.main {
+    display: flex;
+    justify-content: space-between;
+}
+
+input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input.invalid {
+    border-color: red;
+}
+
+.date-error,
+.cron-next,
+.cron-error {
+    color: rgba(255, 255, 255, 0.5);
+    font-family: monospace;
+}
+
+.date-error,
+.cron-error {
+    color: red;
+}

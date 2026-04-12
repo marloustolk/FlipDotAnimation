@@ -1,0 +1,39 @@
+<div class="main">
+    <label for="execute">execute at</label>
+
+    <select name="mode" [(ngModel)]="mode">
+        <option value="now">Now</option>
+        <option value="date">Date</option>
+        <option value="cron">CRON</option>
+    </select>
+</div>
+
+@switch (mode()) {
+    @case ('date') {
+        <input
+            type="datetime-local"
+            id="execute"
+            [class.invalid]="!!dateError()"
+            [ngModel]="date()"
+            (ngModelChange)="dateChange($event)"
+        />
+        @if (dateError()) {
+            <span class="date-error">{{dateError()}}</span>
+        }
+    }
+    @case ('cron') {
+        <input
+            type="string"
+            id="execute"
+            [class.invalid]="!!cronError()"
+            [ngModel]="cron()"
+            (ngModelChange)="cronChange($event)"
+        />
+        @if (cronNext()) {
+            <span class="cron-next">Next at: {{cronNext()}}</span>
+        }
+        @if (cronError()) {
+            <span class="cron-error">{{cronError()}}</span>
+        }
+    }
+}

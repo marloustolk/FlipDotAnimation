@@ -19,6 +19,7 @@ export class LoginComponent {
 
   protected showLogin = signal(false);
   protected showPassword = model(false);
+  protected rememberMe = model(false);
   protected error = signal<string|null>(null);
   protected passwordText = model('');
   protected loggedIn = toSignal(this.service.readyForRequests$)
@@ -36,7 +37,7 @@ export class LoginComponent {
     if (this.showLogin() && password.length > 0) {
       this.service.getPasswordError(password).subscribe(error => {
         if (!error) {
-          this.service.login(password);
+          this.service.login(password, { rememberMe: this.rememberMe() });
           this.close();
         } else {
           this.error.set(error);
